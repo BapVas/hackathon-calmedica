@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ResponsesDocument } from '../utils/Responses.types';
+import { defaultCategory } from '../utils/categories';
 
 @Injectable()
 export class ResponseService {
@@ -18,14 +19,18 @@ export class ResponseService {
     }
 
     const score = isNaN(content) ? null : parseInt(content);
+    const categories = [];
+
+    if (score !== null) {
+      categories.push({ ...defaultCategory, score: score });
+    }
 
     const response = new this.responseModel({
       id: id,
       content: content,
-      score: score,
       isAnalysed: false,
       shouldBeAnalysed: isNaN(content),
-      categories: [],
+      categories: categories,
       date: new Date(),
     });
 
@@ -35,10 +40,10 @@ export class ResponseService {
   }
 
   async getResponses(): Promise<ResponsesDocument[]> {
-    return await this.responseModel.find();
+    return this.responseModel.find();
   }
 
   async deleteResponse(id: string): Promise<ResponsesDocument> {
-    return await this.responseModel.findOneAndDelete({ id: id });
+    return this.responseModel.findOneAndDelete({ id: id });
   }
 }

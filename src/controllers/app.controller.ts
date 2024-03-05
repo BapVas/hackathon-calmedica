@@ -1,8 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
-import * as fs from 'fs';
 import mongoAggregates from '../services/mongoAggregates';
-import toAnalyseResponses from '../queries/toAnalyseResponses';
 
 // Read csv file, create for each line a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
 
@@ -27,16 +25,15 @@ export class AppController {
 
   @Get('graph')
   @Render('graph.hbs')
-  async graph() {
-  }
+  async graph() {}
 
   @Get('graph-data')
   async graphdata() {
     const data = await mongoAggregates().messageCountByCategory();
 
-    let labels = [];
-    let counts = [];
-    for(var i in data) {
+    const labels = [];
+    const counts = [];
+    for (const i in data) {
       const row = data[i];
       labels.push(row._id);
       counts.push(row.count);
@@ -44,7 +41,7 @@ export class AppController {
 
     return {
       labels: labels,
-      counts: counts
+      counts: counts,
     };
   }
 }

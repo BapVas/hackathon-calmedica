@@ -8,7 +8,7 @@ import {
   Render,
 } from '@nestjs/common';
 import { ResponseService } from '../services/ResponseService';
-import { Category } from '../utils/categories.types';
+import { Category, CategoryDocument } from '../utils/categories.types';
 import { ResponsesDocument } from '../utils/Responses.types';
 import { categories as importedCategories } from '../utils/categories';
 
@@ -32,10 +32,7 @@ export class ResponseController {
     const result: ResponsesDocument[] =
       await this.responseService.getResponses();
 
-    const categories = {
-      ...importedCategories,
-      not_in_category: { type: 'not_in_category', responses: [] },
-    };
+    const categories = { ...importedCategories };
 
     result.forEach((response) => {
       if (response.categories.length === 0) {
@@ -43,14 +40,7 @@ export class ResponseController {
       }
 
       response.categories.forEach((category) => {
-        if (!categories[category.type]) {
-          categories[category.type] = {
-            type: category.type,
-            responses: [],
-          } as Category;
-        }
-
-        categories[category.type].responses.push(response);
+        categories[category.name].responses.push(response);
       });
     });
 

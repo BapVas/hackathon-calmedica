@@ -1,28 +1,41 @@
-import { Category } from './categories.types';
+import { CategoryDocument } from './categories.types';
 
-export const categories: Category[] = [
-  {
-    type: 'hotellerie',
+export const categories: { [key: string]: CategoryDocument } = {
+  hotellerie: {
+    name: 'hotellerie',
+    score: null,
     responses: [],
   },
-  {
-    type: 'santé',
+  sante: {
+    name: 'sante',
+    score: null,
     responses: [],
   },
-  {
-    type: 'médicale',
+  medicale: {
+    name: 'medicale',
+    score: null,
     responses: [],
   },
-  {
-    type: 'relationnel',
+  relationnel: {
+    name: 'relationnel',
+    score: null,
     responses: [],
   },
-  {
-    type: 'général',
+  administratif: {
+    name: 'administratif',
+    score: null,
     responses: [],
   },
-  {
-    type: 'administratif',
+  not_in_category: {
+    name: 'not_in_category',
+    score: null,
     responses: [],
   },
-];
+  general: {
+    name: 'general',
+    score: null,
+    responses: [],
+  },
+};
+
+export const defaultCategory = categories['general'];
