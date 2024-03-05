@@ -1,5 +1,5 @@
 function formatDateToHumanReadable(date) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
   return new Date(date).toLocaleDateString('fr-FR', options);
 }
 
@@ -9,7 +9,7 @@ function getMessages() {
   const messagesList = document.getElementById('messages-list');
   messagesList.innerHTML = messages
     .map(
-      (message) => `
+      (message, index) => `
 <li class="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
   <div>
     <div class="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
@@ -18,13 +18,18 @@ function getMessages() {
     <span class="text-xs text-gray-500 leading-none">${formatDateToHumanReadable(message.date)}</span>
   </div>
   <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-    <img src="https://placehold.co/600/black/white?text=AI" alt="avatar" class="h-10 w-10 rounded-full" />
+    <img src="https://placehold.co/600/black/white?text=${index}" alt="avatar" class="h-10 w-10 rounded-full" />
   </div>
 </li>`,
     )
     .join('');
+
+  setTimeout(() => {
+    messagesList.scrollTop = messagesList.scrollHeight;
+  });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function deleteResponse(id) {
   if (confirm('Are you sure you want to delete this response?') === false) {
     return;
