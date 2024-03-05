@@ -26,11 +26,25 @@ export class AppController {
   }
 
   @Get('graph')
-  async graph(): Promise<string> {
-    const test = await toAnalyseResponses;
-    console.log(await toAnalyseResponses);
-    console.log(await mongoAggregates().messageCountByCategory());
+  @Render('graph.hbs')
+  async graph() {
+  }
 
-    return 'ok';
+  @Get('graph-data')
+  async graphdata() {
+    const data = await mongoAggregates().messageCountByCategory();
+
+    let labels = [];
+    let counts = [];
+    for(var i in data) {
+      const row = data[i];
+      labels.push(row._id);
+      counts.push(row.count);
+    }
+
+    return {
+      labels: labels,
+      counts: counts
+    };
   }
 }
