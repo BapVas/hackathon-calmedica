@@ -77,6 +77,11 @@ function addInputEvent() {
 
 function addButtonEvent() {
   const button = document.getElementById('delete-conversation');
+
+  if (!button) {
+    return;
+  }
+
   button.addEventListener('click', function () {
     if (
       confirm('Are you sure you want to delete this conversation?') === false
@@ -89,7 +94,18 @@ function addButtonEvent() {
   });
 }
 
+function showScore() {
+  document.querySelectorAll('[data-show-score]').forEach((element) => {
+    const responseAtt = element.getAttribute('data-show-score');
+    const categoryAtt = element.getAttribute('data-category');
+    const scores = JSON.parse(responseAtt);
+    element.innerHTML = scores[categoryAtt] ?? 'n/a';
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   addInputEvent();
   addButtonEvent();
+
+  showScore();
 });

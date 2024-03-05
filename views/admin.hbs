@@ -43,8 +43,7 @@
                 <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 flex text-wrap max-w-64">
                   {{response.content}}
                 </th>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-<!--                  {{#if response.score}}{{response.score}}{{else}}N/A{{/if}}-->
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" data-show-score="{{response.scores}}" data-category="{{category.name}}">
                 </td>
                 <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {{#if response.shouldBeAnalysed}}

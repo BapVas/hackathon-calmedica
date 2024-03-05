@@ -8,7 +8,6 @@ import {
   Render,
 } from '@nestjs/common';
 import { ResponseService } from '../services/ResponseService';
-import { Category, CategoryDocument } from '../utils/categories.types';
 import { ResponsesDocument } from '../utils/Responses.types';
 import { categories as importedCategories } from '../utils/categories';
 
@@ -41,6 +40,17 @@ export class ResponseController {
 
       response.categories.forEach((category) => {
         categories[category.name].responses.push(response);
+      });
+    });
+
+    Object.keys(categories).forEach((category: string) => {
+      Object.keys(categories[category].responses).forEach((response) => {
+        const element = categories[category].responses[response];
+        element.scores = {};
+        element.categories.forEach((cat) => {
+          element.scores[cat.name] = cat.score;
+        });
+        element.scores = JSON.stringify(element.scores);
       });
     });
 
