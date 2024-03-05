@@ -1,6 +1,8 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
 import { OpenAiConnector } from '../services/OpenAiConnector'; // Adjust the path
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 
 // Read csv file, create for each lines a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
@@ -10,6 +12,7 @@ export class AppController {
   constructor(
     private readonly csvService: CsvService,
     private readonly openAiConnector: OpenAiConnector,
+    @InjectModel('Response') private readonly responseModel: Model<any>,
   ) {}
 
   @Get()
@@ -48,5 +51,43 @@ export class AppController {
     //   console.error('Error in testPrompt:', error);
     //   throw error;
     // }
+  }
+
+  @Get('getBatchOf50')
+  async getBatchOf50(): Promise<string> {
+    try {
+      const batchSize = 3;
+      let allResponses = [];
+
+      while (true) {
+        const responses = await this.responseModel
+          .find({ shouldBeAnalysed: true, isAnalysed: false })
+          .select('content')
+          .limit(batchSize)
+          .exec();
+
+        if (responses.length === 0) {
+          break; // No more documents to process
+        }
+
+        // Here we send the batch of 3 to chatGpt with the prompt
+
+        // We then get the response and save it to the database
+
+        // Update 'isAnalysed' field for the current batch
+        const responseIds = responses.map((response) => response._id);
+        await this.responseModel.updateMany(
+          { _id: { $in: responseIds } },
+          { $set: { isAnalysed: true } },
+        );
+
+        allResponses = allResponses.concat(responses);
+      }
+
+      return JSON.stringify(allResponses);
+    } catch (error) {
+      console.error('Error in getBatchOf50:', error);
+      throw error;
+    }
   }
 }
