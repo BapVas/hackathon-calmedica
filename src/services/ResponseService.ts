@@ -13,10 +13,12 @@ export class ResponseService {
       id = Math.floor(Math.random() * 1000000) + '-' + new Date().getTime();
     }
 
+    const score = isNaN(content) ? null : parseInt(content);
+
     const response = new this.responseModel({
       id: id,
       content: content,
-      score: null,
+      score: score,
       isAnalysed: false,
       shouldBeAnalysed: isNaN(content),
       categories: [],
