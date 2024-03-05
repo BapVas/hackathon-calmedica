@@ -14,7 +14,7 @@ const mongoAggregates = () => ({
       },
       {
         $group: {
-          _id: '$categories.type',
+          _id: '$categories.name',
           count: { $sum: 1 },
         },
       },

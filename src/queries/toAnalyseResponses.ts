@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-import { ResponseSchema } from '../schema/Response.schema';
 import { MongoClient } from 'mongodb';
 import * as process from 'process';
 
@@ -10,7 +8,8 @@ async function getNext50UnprocessedDocuments() {
     const database = mongodb.db('nest');
     const collection = database.collection('responses');
 
-    return await collection.find({ shouldBeAnalysed: true, isAnalysed: false })
+    return await collection
+      .find({ shouldBeAnalysed: true, isAnalysed: false })
       .limit(50)
       .skip(0)
       .toArray();

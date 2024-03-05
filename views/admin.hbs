@@ -22,12 +22,12 @@
       </div>
       <div class="flex items-center justify-center mb-6">
         {{#each categories as |category|}}
-            <a href="#{{category.type}}" class="bg-gray-200 text-gray-700 hover:!bg-gray-400 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{category.type}}</a>
+            <a href="#{{category.name}}" class="bg-gray-200 text-gray-700 hover:!bg-gray-400 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{category.name}}</a>
         {{/each}}
       </div>
       <div class="block w-full overflow-x-auto">
         {{#each categories as |category|}}
-          <h3 class="font-semibold text-base text-slate-700 px-6 mb-4 border-t-2 pt-4 border-solid border-gray-300" id="{{ category.type }}">Catégorie : {{category.type}}</h3>
+          <h3 class="font-semibold text-base text-slate-700 px-6 mb-4 border-t-2 pt-4 border-solid border-gray-300" id="{{ category.name }}">Catégorie : {{category.name}}</h3>
           <table class="items-center bg-transparent w-full border-collapse border-bottom mb-10">
             <thead>
             <tr>
@@ -40,11 +40,11 @@
             <tbody>
             {{#each category.responses as |response|}}
               <tr>
-                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
-                  {{response.content }}
+                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 flex text-wrap max-w-64">
+                  {{response.content}}
                 </th>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                  {{#if response.score}}{{response.score}}{{else}}N/A{{/if}}
+<!--                  {{#if response.score}}{{response.score}}{{else}}N/A{{/if}}-->
                 </td>
                 <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {{#if response.shouldBeAnalysed}}

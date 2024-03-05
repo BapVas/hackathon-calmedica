@@ -1,9 +1,10 @@
 export type Category = {
-  type: string;
+  name: string;
   responses: any[];
 };
 
 export type CategoryDocument = {
-  type: string;
+  name: string;
   responses: any[];
+  score: number;
 };
