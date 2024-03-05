@@ -25,10 +25,12 @@ export class CsvService {
   }
 
   async saveResponse(row: any): Promise<void> {
+    const score = isNaN(row.content) ? null : parseInt(row.content);
+
     const response = new this.responseModel({
       id: row.id,
       content: row.content,
-      score: null,
+      score: score,
       isAnalysed: false,
       shouldBeAnalysed: isNaN(row.content),
       categories: [],

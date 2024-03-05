@@ -27,6 +27,7 @@
     "@nestjs/platform-fastify": "^10.3.2",
     "csv-parser": "^3.0.0",
     "fs-extra": "^11.2.0",
+    "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
     "openai": "^4.28.4",
     "reflect-metadata": "^0.2.0",
