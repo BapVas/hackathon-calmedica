@@ -83,7 +83,7 @@ export class AppController {
   @Get('testPrompt')
   async testPrompt(): Promise<string> {
     try {
-      const batchSize = 3;
+      const batchSize = 25;
       let allResponses = [];
 
       while (true) {
@@ -115,23 +115,14 @@ export class AppController {
             // we save it to the database
             console.log('promptResult: ', promptResult);
             console.log('categories: ', promptResult.categories);
-            const generalCategory = promptResult.categories.find(category => category.name === 'general') ?? { score: 4 };
             await this.responseModel.findByIdAndUpdate(
               promptResult.id,
-              { $set: { categories: promptResult.categories, score: generalCategory.score } },
+              { $set: { categories: promptResult.categories, isAnalysed: true } },
             );
           }
-
         } catch (error) {
           console.error('Error in testPrompt:', error);
         }
-
-        // Update 'isAnalysed' field for the current batch
-        const responseIds = responses.map((response) => response._id);
-        await this.responseModel.updateMany(
-          { _id: { $in: responseIds } },
-          { $set: { isAnalysed: true } },
-        );
 
         allResponses = allResponses.concat(responses);
       }
