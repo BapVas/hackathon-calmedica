@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
+import { OpenAiConnector } from '../services/OpenAiConnector'; // Adjust the path
 import * as fs from 'fs';
 
 // Read csv file, create for each lines a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
 
 @Controller()
 export class AppController {
-  constructor(private readonly csvService: CsvService) {}
+  constructor(
+    private readonly csvService: CsvService,
+    private readonly openAiConnector: OpenAiConnector,
+  ) {}
 
   @Get()
   async getHello(): Promise<string> {
@@ -23,5 +27,19 @@ export class AppController {
     await this.csvService.importCsv('./src/files/data.csv');
 
     return JSON.stringify('ok');
+  }
+
+  @Get('testPrompt')
+  async testPrompt(): Promise<string> {
+    try {
+      const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
+      const result = await this.openAiConnector.query(message);
+
+      // Process the result or return it directly, depending on your needs
+      return JSON.stringify(result);
+    } catch (error) {
+      console.error('Error in testPrompt:', error);
+      throw error;
+    }
   }
 }

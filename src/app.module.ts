@@ -4,6 +4,7 @@ import { CsvService } from './services/CSVService';
 import { AppService } from './services/AppService';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ResponseSchema } from './schema/Response.schema';
+import { OpenAiConnector } from "./services/OpenAiConnector";
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { ResponseSchema } from './schema/Response.schema';
     MongooseModule.forFeature([{ name: 'Response', schema: ResponseSchema }]),
   ],
   controllers: [AppController],
-  providers: [AppService, CsvService],
+  providers: [AppService, CsvService, OpenAiConnector],
 })
 export class AppModule {}
