@@ -57,18 +57,19 @@ export class AppController {
           JSON.stringify(responses),
         );
         const formattedPrompt = promptText.replace(/\s+/g, ' ').trim();
-        return JSON.stringify(formattedPrompt);
 
-        // try {
-        //   const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
-        //   const result = await this.openAiConnector.query(formattedPrompt);
+        try {
+          const result = await this.openAiConnector.query(formattedPrompt);
+          console.log('result:', result);
+          // return JSON.stringify(result);
 
-        //   // Process the result or return it directly, depending on your needs
-        //   return JSON.stringify(result);
-        // } catch (error) {
-        //   console.error('Error in testPrompt:', error);
-        //   throw error;
-        // }
+          // Process the result or return it directly, depending on your needs
+
+          return JSON.stringify(result);
+        } catch (error) {
+          console.error('Error in testPrompt:', error);
+          throw error;
+        }
 
         // We then get the response and save it to the database
 

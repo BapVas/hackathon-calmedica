@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
 interface OpenAiConnectorOptions {
   apiKey: string;
@@ -9,7 +9,7 @@ export class OpenAiConnector {
 
   constructor(private readonly options: OpenAiConnectorOptions) {
     this.openai = new OpenAI({
-      apiKey: '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',
+      apiKey: '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',
     });
   }
 
