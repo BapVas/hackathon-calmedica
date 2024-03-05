@@ -1,16 +1,27 @@
 import OpenAI from 'openai';
 
-const OpenAiConnector = (apiKey: string) => ({
-  query: async (message: string) => {
-    const openai = new OpenAI({
-      apiKey: apiKey, // This is the default and can be omitted
-    });
+interface OpenAiConnectorOptions {
+  apiKey: string;
+}
 
-    return openai.chat.completions.create({
-      messages: [{ role: 'user', content: 'Say this is a test' }],
-      model: 'gpt-3.5-turbo',
-    });
-  },
-});
+export class OpenAiConnector {
+  private openai: OpenAI;
 
-export default OpenAiConnector;
+  constructor(private readonly options: OpenAiConnectorOptions) {
+    this.openai = new OpenAI({
+      apiKey: 'sk',
+    });
+  }
+
+  async query(message: string): Promise<any> {
+    try {
+      return await this.openai.chat.completions.create({
+        messages: [{ role: 'user', content: message }],
+        model: 'gpt-3.5-turbo',
+      });
+    } catch (error) {
+      console.error('Error querying OpenAI API:', error);
+      throw error;
+    }
+  }
+}

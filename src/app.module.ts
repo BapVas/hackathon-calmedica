@@ -3,6 +3,7 @@ import { AppController } from './controllers/app.controller';
 import { CsvService } from './services/CSVService';
 import { AppService } from './services/AppService';
 import { MongooseModule } from '@nestjs/mongoose';
+import { OpenAiConnector } from './services/OpenAiConnector';
 import { ResponseSchema, ResponseSchemaName } from './schema/Response.schema';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -30,6 +31,6 @@ import { ResponseController } from './controllers/response.controller';
     }),
   ],
   controllers: [AppController, ResponseController],
-  providers: [AppService, CsvService, ResponseService],
+  providers: [AppService, CsvService, ResponseService, OpenAiConnector],
 })
 export class AppModule {}

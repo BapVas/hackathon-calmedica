@@ -11,7 +11,10 @@ export const ResponseSchema = new mongoose.Schema({
   categories: [
     {
       name: String,
-      score: Number,
+      score: {
+        type: Number,
+        default: null,
+      },
       isAIGenerated: Boolean,
     },
   ],

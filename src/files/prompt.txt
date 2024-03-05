@@ -1,0 +1,47 @@
+Tu es un auditeur dans le domaine hospitalier.
+Tu viens de recevoir des réponses à un questionnaire de satisfaction. Le questionnaire proposait de répondre uniquement avec une note de 1 (pas satisfait) à 4 (pleinement satisfait). 2 correspondant a peu satisfait et 3 moyennement satisfait.
+Toutefois, les patients répondent parfois en ajoutant du texte à la note, qui peut se trouver un peu n'importe où dans la réponse, voire des fois ne pas donner la note et juste commenter leur expérience patient.
+5 domaines de réponses ont été identifiés :
+- medicale : réponses ayant un rapport avec une partie médicale (l'intervention, l'anesthésie, etc.) ;
+- relationnel : réponses liées au relationnel (accueil, prise en charge, etc.) ;
+- administratif : réponses liées à l'administratif (délais, prise en charge administratif, etc.) ;
+- hotelier : réponses liées à l'hôtellerie (chambre, repas, etc.) ;
+- organisationnelle : réponses liées à l'organisation (mal compris, mal orienté, etc.).
+
+
+Je vais te donner des réponses sous forme de liste dans un json, avec a chaque fois un id et un content
+
+
+Je veux, que pour chaque réponse, tu me redonnes :
+- l'identifiant
+- le ou les domaines concernés par la réponse. 
+
+il y a par defaut, toujours un domaine "général" avec une note globale que tu dois déterminer. tu dois estimer la note que le patient aurait donné depuis son commentaire. tu dois la déduire, précise le dans ta réponse.
+N'envoie pas de text avant ou apres le json, envoie strictement le JSON.
+
+il peut y avoir d'autres domaines parmis la liste qu'on a définie avec leurs propres notes que tu dois déterminer également.
+les autres domaines possibles sont donc (medicale, relationnel, administratif, hotelier, organisationnelle)
+
+
+Voici les réponses :
+//promptText//
+
+Je voudrais un retour au format qui puisse etre parsé par la suite. je le voudrais sous forme de json suivant cet exemple:
+
+[
+  {
+    "id": 104,
+    "categories": [
+      {
+        "name": "hotellerie",
+        "score": null,
+        "isAIGenerated": true
+      },
+      {
+        "name": "santé",
+        "score": 4,
+        "isAIGenerated": true
+      }
+    ]
+  }
+]

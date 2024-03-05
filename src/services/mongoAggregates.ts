@@ -35,15 +35,41 @@ const mongoAggregates = () => ({
       },
       {
         $group: {
-          _id: '$categories.type',
-          averageScore: { $avg: "$categories.score" },
+          _id: '$categories.name',
+          averageScore: { $avg: '$categories.score' },
         },
       },
     ];
 
-    const result = await collection.aggregate(pipeline).toArray();
+    return await collection.aggregate(pipeline).toArray();
+  },
 
-    return result;
+  messagesByScoresAndCategory: async (scores: number[], category: string) => {
+    const mongodb = new MongoClient(process.env.MONGO_URI);
+    await mongodb.connect();
+    const database = mongodb.db('nest');
+    const collection = database.collection('responses');
+
+    const pipeline = [
+      {
+        $unwind: '$categories',
+      },
+      {
+        $match: {
+          'categories.name': category,
+          'categories.score': { $in: scores },
+          'shouldBeAnalysed': true
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          content: 1
+        }
+      }
+    ];
+
+    return await collection.aggregate(pipeline).toArray();
   },
 });
 
