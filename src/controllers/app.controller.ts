@@ -56,9 +56,9 @@ export class AppController {
   async graphdataaverages() {
     const data = await mongoAggregates().averagesByCategory();
 
-    let labels = [];
-    let averages = [];
-    for(var i in data) {
+    const labels = [];
+    const averages = [];
+    for (const i in data) {
       const row = data[i];
       labels.push(row._id);
       averages.push(row.averageScore);
@@ -66,33 +66,32 @@ export class AppController {
 
     return {
       labels: labels,
-      averages: averages
+      averages: averages,
     };
   }
 
   @Get('summary/:category/:scores')
-  async summary(@Param() params: { category: string, scores: string }) {
+  async summary(@Param() params: { category: string; scores: string }) {
     const scoresArrayAsString = params.scores.split('-');
-    const scoresArrayAsNumbers = scoresArrayAsString.map((value) => parseInt(value));
+    const scoresArrayAsNumbers = scoresArrayAsString.map((value) =>
+      parseInt(value),
+    );
 
-    const data = await mongoAggregates().messagesByScoresAndCategory(scoresArrayAsNumbers, params.category);
+    await mongoAggregates().messagesByScoresAndCategory(
+      scoresArrayAsNumbers,
+      params.category,
+    );
 
     const filePath = './src/files/prompt-summary.txt';
     const summaryPrompt = fs.readFileSync(filePath, 'utf8');
-    const promptText = summaryPrompt.replace(
-      '//promptText//',
-      JSON.stringify(data),
-    );
 
     const result = await this.openAiConnector.query(summaryPrompt);
 
-    const promptResults = result.choices[0].message.content;
-
-    return promptResults;
+    return result.choices[0].message.content;
   }
 
-  @Get('testPrompt')
-  async testPrompt(): Promise<string> {
+  @Get('/analyze')
+  async analyze(): Promise<string> {
     try {
       const batchSize = 25;
       let allResponses = [];
@@ -105,8 +104,10 @@ export class AppController {
           .exec();
 
         if (responses.length === 0) {
+          console.log('no more documents to process');
           break; // No more documents to process
         }
+        console.log('ok');
 
         const filePath = './src/files/prompt.txt';
         const csvData = fs.readFileSync(filePath, 'utf8');
@@ -120,16 +121,12 @@ export class AppController {
           const result = await this.openAiConnector.query(formattedPrompt);
 
           const promptResults = JSON.parse(result.choices[0].message.content);
-          console.log('promptResults: ', promptResults);
 
           for (const promptResult of promptResults) {
             // we save it to the database
-            console.log('promptResult: ', promptResult);
-            console.log('categories: ', promptResult.categories);
-            await this.responseModel.findByIdAndUpdate(
-              promptResult.id,
-              { $set: { categories: promptResult.categories, isAnalysed: true } },
-            );
+            await this.responseModel.findByIdAndUpdate(promptResult.id, {
+              $set: { categories: promptResult.categories, isAnalysed: true },
+            });
           }
         } catch (error) {
           console.error('Error in testPrompt:', error);

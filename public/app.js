@@ -1,5 +1,11 @@
 function formatDateToHumanReadable(date) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
   return new Date(date).toLocaleDateString('fr-FR', options);
 }
 
@@ -108,9 +114,31 @@ function showScore() {
   });
 }
 
+function addAnalyzeButtonEvent() {
+  const button = document.getElementById('analyze-button');
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener('click', function () {
+    alert(
+      "L'anayse des réponses va démarer. Vous serez notifié une fois l'analyse terminée.",
+    );
+
+    fetch('/analyze')
+      .then((response) => response.json())
+      .then(() => {
+        alert(
+          "L'analyse est terminée. Vous pouvez consulter les résultats dans la section 'Résultats'.",
+        );
+      });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   addInputEvent();
   addButtonEvent();
-
   showScore();
+  addAnalyzeButtonEvent();
 });

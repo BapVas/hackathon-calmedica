@@ -39,7 +39,7 @@ export class ResponseController {
       }
 
       response.categories.forEach((category) => {
-        categories[category.name].responses.push(response);
+        categories[category.name]?.responses.push(response);
       });
     });
 
