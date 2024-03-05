@@ -31,15 +31,22 @@ export class AppController {
 
   @Get('testPrompt')
   async testPrompt(): Promise<string> {
-    try {
-      const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
-      const result = await this.openAiConnector.query(message);
+    const filePath = './src/files/prompt.txt';
+    const csvData = fs.readFileSync(filePath, 'utf8');
+    const responses = 'dddddddddd';
+    const promptText = csvData.replace('//promptText//', responses);
+    console.log(promptText);
+    return JSON.stringify(promptText);
 
-      // Process the result or return it directly, depending on your needs
-      return JSON.stringify(result);
-    } catch (error) {
-      console.error('Error in testPrompt:', error);
-      throw error;
-    }
+    // try {
+    //   const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
+    //   const result = await this.openAiConnector.query(message);
+
+    //   // Process the result or return it directly, depending on your needs
+    //   return JSON.stringify(result);
+    // } catch (error) {
+    //   console.error('Error in testPrompt:', error);
+    //   throw error;
+    // }
   }
 }
