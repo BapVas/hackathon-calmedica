@@ -38,8 +38,9 @@ export class AppController {
     const csvData = fs.readFileSync(filePath, 'utf8');
     const responses = 'dddddddddd';
     const promptText = csvData.replace('//promptText//', responses);
-    console.log(promptText);
-    return JSON.stringify(promptText);
+    const formattedPrompt = promptText.replace(/\s+/g, ' ').trim();
+    console.log(formattedPrompt);
+    return JSON.stringify(formattedPrompt);
 
     // try {
     //   const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message

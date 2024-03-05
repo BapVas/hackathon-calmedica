@@ -27,7 +27,6 @@ Voici les réponses :
 
 Je voudrais un retour au format qui puisse etre parsé par la suite. je le voudrais sous forme de json suivant cet exemple:
 
-
 [
   {
     "id": 104,
