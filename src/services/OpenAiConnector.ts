@@ -9,7 +9,7 @@ export class OpenAiConnector {
 
   constructor(private readonly options: OpenAiConnectorOptions) {
     this.openai = new OpenAI({
-      apiKey: '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',
+      apiKey: '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',
     });
   }
 

@@ -49,7 +49,6 @@ export class AppController {
           break; // No more documents to process
         }
 
-        // Here we send the batch of 3 to chatGpt with the prompt
         const filePath = './src/files/prompt.txt';
         const csvData = fs.readFileSync(filePath, 'utf8');
         const promptText = csvData.replace(
@@ -60,18 +59,24 @@ export class AppController {
 
         try {
           const result = await this.openAiConnector.query(formattedPrompt);
-          console.log('result:', result);
-          // return JSON.stringify(result);
 
-          // Process the result or return it directly, depending on your needs
+          const promptResults = JSON.parse(result.choices[0].message.content);
+          console.log('promptResults: ', promptResults);
 
-          return JSON.stringify(result);
+          for (const promptResult of promptResults) {
+            // we save it to the database
+            console.log('promptResult: ', promptResult);
+            console.log('categories: ', promptResult.categories);
+            const generalCategory = promptResult.categories.find(category => category.name === 'general') ?? { score: 4 };
+            await this.responseModel.findByIdAndUpdate(
+              promptResult.id,
+              { $set: { categories: promptResult.categories, score: generalCategory.score } },
+            );
+          }
+
         } catch (error) {
           console.error('Error in testPrompt:', error);
-          throw error;
         }
-
-        // We then get the response and save it to the database
 
         // Update 'isAnalysed' field for the current batch
         const responseIds = responses.map((response) => response._id);

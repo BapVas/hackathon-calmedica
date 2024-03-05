@@ -33,15 +33,14 @@ Je voudrais un retour au format qui puisse etre parsé par la suite. je le voudr
     "id": 104,
     "categories": [
       {
-        "type": "hotellerie",
+        "name": "hotellerie",
         "score": null,
-              "isAiGenerated": true
-
+        "isAIGenerated": true
       },
       {
-        "type": "santé",
+        "name": "santé",
         "score": 4,
-        "isAiGenerated": true
+        "isAIGenerated": true
       }
     ]
   }
