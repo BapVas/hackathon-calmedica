@@ -49,11 +49,35 @@ export class AppController {
   @Get('getBatchOf50')
   async getBatchOf50(): Promise<string> {
     try {
-      // Assuming your model name for "responses" is 'Response'
-      const responses = await this.responseModel.find().limit(50).exec();
+      const batchSize = 3;
+      let allResponses = [];
 
-      // Process the results or return them directly, depending on your needs
-      return JSON.stringify(responses);
+      while (true) {
+        const responses = await this.responseModel
+          .find({ shouldBeAnalysed: true, isAnalysed: false })
+          .select('content')
+          .limit(batchSize)
+          .exec();
+
+        if (responses.length === 0) {
+          break; // No more documents to process
+        }
+
+        // Here we send the batch of 3 to chatGpt with the prompt
+
+        // We then get the response and save it to the database
+
+        // Update 'isAnalysed' field for the current batch
+        const responseIds = responses.map((response) => response._id);
+        await this.responseModel.updateMany(
+          { _id: { $in: responseIds } },
+          { $set: { isAnalysed: true } },
+        );
+
+        allResponses = allResponses.concat(responses);
+      }
+
+      return JSON.stringify(allResponses);
     } catch (error) {
       console.error('Error in getBatchOf50:', error);
       throw error;
