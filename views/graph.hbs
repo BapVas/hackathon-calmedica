@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph : nombre de messages par catégorie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/public/app.js"></script>
+  <link rel="stylesheet" href="/public/app.css">
+</head>
+<body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+<div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+  <div>
+    <canvas id="myChart"></canvas>
+  </div>
+  <legend>Rappel : un même message peut apparaître dans plusieurs catégories.</legend>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module">
+  const ctx = document.getElementById('myChart');
+
+
+  const response = await fetch("http://localhost:3000/graph-data");
+  const data = await response.json();
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'nombre de messages',
+        data: data.counts,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
