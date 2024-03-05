@@ -34,28 +34,6 @@ export class AppController {
 
   @Get('testPrompt')
   async testPrompt(): Promise<string> {
-    const filePath = './src/files/prompt.txt';
-    const csvData = fs.readFileSync(filePath, 'utf8');
-    const responses = 'dddddddddd';
-    const promptText = csvData.replace('//promptText//', responses);
-    const formattedPrompt = promptText.replace(/\s+/g, ' ').trim();
-    console.log(formattedPrompt);
-    return JSON.stringify(formattedPrompt);
-
-    // try {
-    //   const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
-    //   const result = await this.openAiConnector.query(message);
-
-    //   // Process the result or return it directly, depending on your needs
-    //   return JSON.stringify(result);
-    // } catch (error) {
-    //   console.error('Error in testPrompt:', error);
-    //   throw error;
-    // }
-  }
-
-  @Get('getBatchOf50')
-  async getBatchOf50(): Promise<string> {
     try {
       const batchSize = 3;
       let allResponses = [];
@@ -72,6 +50,25 @@ export class AppController {
         }
 
         // Here we send the batch of 3 to chatGpt with the prompt
+        const filePath = './src/files/prompt.txt';
+        const csvData = fs.readFileSync(filePath, 'utf8');
+        const promptText = csvData.replace(
+          '//promptText//',
+          JSON.stringify(responses),
+        );
+        const formattedPrompt = promptText.replace(/\s+/g, ' ').trim();
+        return JSON.stringify(formattedPrompt);
+
+        // try {
+        //   const message = 'Alec is a good guy, what do you think?'; // Set your desired prompt message
+        //   const result = await this.openAiConnector.query(formattedPrompt);
+
+        //   // Process the result or return it directly, depending on your needs
+        //   return JSON.stringify(result);
+        // } catch (error) {
+        //   console.error('Error in testPrompt:', error);
+        //   throw error;
+        // }
 
         // We then get the response and save it to the database
 
@@ -91,4 +88,9 @@ export class AppController {
       throw error;
     }
   }
+
+  // @Get('getBatchOf50')
+  // async getBatchOf50(): Promise<string> {
+  //
+  // }
 }

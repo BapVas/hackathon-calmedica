@@ -17,6 +17,7 @@ Je veux, que pour chaque réponse, tu me redonnes :
 - le ou les domaines concernés par la réponse. 
 
 il y a par defaut, toujours un domaine "général" avec une note globale que tu dois déterminer. tu dois estimer la note que le patient aurait donné depuis son commentaire. tu dois la déduire, précise le dans ta réponse.
+N'envoie pas de text avant ou apres le json, envoie strictement le JSON.
 
 il peux y avoir d'autres catégories parmis la liste que on a définie avec leurs propres notes que tu dois déterminer également.
 il y a a minima une catégorie. voir plus parmis la liste.
