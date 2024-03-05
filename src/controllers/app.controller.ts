@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Param, Render } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
 import * as fs from 'fs';
 import mongoAggregates from '../services/mongoAggregates';
@@ -63,5 +63,15 @@ export class AppController {
       labels: labels,
       averages: averages
     };
+  }
+
+  @Get('summary/:category/:scores')
+  async summary(@Param() params: { category: string, scores: string }) {
+    const scoresArrayAsString = params.scores.split('-');
+    const scoresArrayAsNumbers = scoresArrayAsString.map((value) => parseInt(value));
+
+    const data = await mongoAggregates().messagesByScoresAndCategory(scoresArrayAsNumbers, params.category);
+
+    return JSON.stringify(data);
   }
 }

@@ -1,5 +1,3 @@
-import mongoose, { Model } from 'mongoose';
-import { ResponseSchema } from '../schema/Response.schema';
 import { MongoClient } from 'mongodb';
 import * as process from 'process';
 
@@ -11,20 +9,18 @@ const mongoAggregates = () => ({
     const collection = database.collection('responses');
 
     const pipeline = [
-        {
-          $unwind: '$categories',
+      {
+        $unwind: '$categories',
+      },
+      {
+        $group: {
+          _id: '$categories.type',
+          count: { $sum: 1 },
         },
-        {
-          $group: {
-            _id: '$categories.type',
-            count: { $sum: 1 },
-          },
-        },
-      ];
+      },
+    ];
 
-    const result = await collection.aggregate(pipeline).toArray();
-
-    return result;
+    return await collection.aggregate(pipeline).toArray();
   },
 
   averagesByCategory: async () => {
@@ -40,14 +36,40 @@ const mongoAggregates = () => ({
       {
         $group: {
           _id: '$categories.type',
-          averageScore: { $avg: "$categories.score" },
+          averageScore: { $avg: '$categories.score' },
         },
       },
     ];
 
-    const result = await collection.aggregate(pipeline).toArray();
+    return await collection.aggregate(pipeline).toArray();
+  },
 
-    return result;
+  messagesByScoresAndCategory: async (scores: number[], category: string) => {
+    const mongodb = new MongoClient(process.env.MONGO_URI);
+    await mongodb.connect();
+    const database = mongodb.db('nest');
+    const collection = database.collection('responses');
+
+    const pipeline = [
+      {
+        $unwind: '$categories',
+      },
+      {
+        $match: {
+          'categories.name': category,
+          'categories.score': { $in: scores },
+          'shouldBeAnalysed': true
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          content: 1
+        }
+      }
+    ];
+
+    return await collection.aggregate(pipeline).toArray();
   },
 });
 
