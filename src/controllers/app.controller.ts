@@ -1,11 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Render } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
+import mongoAggregates from '../services/mongoAggregates';
 import { OpenAiConnector } from '../services/OpenAiConnector'; // Adjust the path
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 
-// Read csv file, create for each lines a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
+// Read csv file, create for each line a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
 
 @Controller()
 export class AppController {
@@ -16,20 +17,67 @@ export class AppController {
   ) {}
 
   @Get()
-  async getHello(): Promise<string> {
-    // const OpenAi = OpenAiConnector("my api key");
-    //
-    // const response = await OpenAi.query("Test");
-    // return JSON.stringify(response);
-    return JSON.stringify('ok');
+  @Render('index.hbs')
+  getHello() {
+    return {
+      title: 'Hello World!',
+    };
   }
 
   @Get('import')
   async import(): Promise<string> {
-    // File is in the files folder ../files/test.csv, use node fs to get the file path
     await this.csvService.importCsv('./src/files/data.csv');
 
     return JSON.stringify('ok');
+  }
+
+  @Get('graph')
+  @Render('graph.hbs')
+  async graph() {}
+
+  @Get('graph-data-counts')
+  async graphdatacounts() {
+    const data = await mongoAggregates().messageCountByCategory();
+
+    const labels = [];
+    const counts = [];
+    for (const i in data) {
+      const row = data[i];
+      labels.push(row._id);
+      counts.push(row.count);
+    }
+
+    return {
+      labels: labels,
+      counts: counts,
+    };
+  }
+  @Get('graph-data-averages')
+  async graphdataaverages() {
+    const data = await mongoAggregates().averagesByCategory();
+
+    let labels = [];
+    let averages = [];
+    for(var i in data) {
+      const row = data[i];
+      labels.push(row._id);
+      averages.push(row.averageScore);
+    }
+
+    return {
+      labels: labels,
+      averages: averages
+    };
+  }
+
+  @Get('summary/:category/:scores')
+  async summary(@Param() params: { category: string, scores: string }) {
+    const scoresArrayAsString = params.scores.split('-');
+    const scoresArrayAsNumbers = scoresArrayAsString.map((value) => parseInt(value));
+
+    const data = await mongoAggregates().messagesByScoresAndCategory(scoresArrayAsNumbers, params.category);
+
+    return JSON.stringify(data);
   }
 
   @Get('testPrompt')
@@ -94,9 +142,4 @@ export class AppController {
       throw error;
     }
   }
-
-  // @Get('getBatchOf50')
-  // async getBatchOf50(): Promise<string> {
-  //
-  // }
 }

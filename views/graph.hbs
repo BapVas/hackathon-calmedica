@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/public/app.js"></script>
+  <link rel="stylesheet" href="/public/app.css">
+</head>
+<body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+<div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+  <h1>Nombre de messages par catégorie</h1>
+  <div>
+    <canvas id="myChart"></canvas>
+  </div>
+  <legend>Rappel : un même message peut apparaître dans plusieurs catégories. La catégorie général contient le véritable total de messages.</legend>
+
+  <h1>Moyenne des notes par catégorie</h1>
+    <div>
+      <canvas id="myChart2"></canvas>
+    </div>
+    <legend>Rappel : Pour les catégories autres que général, les notes sont pour la plupart générées via l'IA depuis les commentaires des patients.<br>Pour général, les patients ayant juste donné une note sont comptés, et ceux n'en ayant pas donné font l'objet d'une estimation par l'IA également.</legend>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module">
+  const ctx = document.getElementById('myChart');
+  const response = await fetch("http://localhost:3000/graph-data-counts");
+  const data = await response.json();
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'nombre de messages',
+        data: data.counts,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  const ctx2 = document.getElementById('myChart2');
+    const response2 = await fetch("http://localhost:3000/graph-data-averages");
+    const data2 = await response2.json();
+
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: data2.labels,
+        datasets: [{
+          label: 'Moyenne des notes /4',
+          data: data2.averages,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+</script>
+
+</body>
+</html>
