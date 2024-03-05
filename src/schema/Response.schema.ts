@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+export const ResponseSchemaName = 'Response';
+
 export const ResponseSchema = new mongoose.Schema({
   id: String,
   content: String,
