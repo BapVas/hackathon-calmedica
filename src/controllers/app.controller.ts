@@ -1,6 +1,8 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CsvService } from '../services/CSVService';
 import { OpenAiConnector } from '../services/OpenAiConnector'; // Adjust the path
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 
 // Read csv file, create for each lines a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
@@ -10,6 +12,7 @@ export class AppController {
   constructor(
     private readonly csvService: CsvService,
     private readonly openAiConnector: OpenAiConnector,
+    @InjectModel('Response') private readonly responseModel: Model<any>,
   ) {}
 
   @Get()
@@ -39,6 +42,20 @@ export class AppController {
       return JSON.stringify(result);
     } catch (error) {
       console.error('Error in testPrompt:', error);
+      throw error;
+    }
+  }
+
+  @Get('getBatchOf50')
+  async getBatchOf50(): Promise<string> {
+    try {
+      // Assuming your model name for "responses" is 'Response'
+      const responses = await this.responseModel.find().limit(50).exec();
+
+      // Process the results or return them directly, depending on your needs
+      return JSON.stringify(responses);
+    } catch (error) {
+      console.error('Error in getBatchOf50:', error);
       throw error;
     }
   }
