@@ -54,6 +54,8 @@ export class ResponseController {
       });
     });
 
+    console.log(categories);
+
     return { categories };
   }
 

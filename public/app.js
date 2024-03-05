@@ -136,9 +136,22 @@ function addAnalyzeButtonEvent() {
   });
 }
 
+function addOpenCategoryButtonEvents() {
+  document.querySelectorAll('[data-open-category]').forEach((element) => {
+    element.addEventListener('click', () => {
+      const category = element.getAttribute('data-open-category');
+      const container = document.querySelector(`[data-category="${category}"]`);
+      console.log(container);
+      container.classList.toggle('hidden');
+      element.classList.toggle('bg-gray-400');
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   addInputEvent();
   addButtonEvent();
   showScore();
   addAnalyzeButtonEvent();
+  addOpenCategoryButtonEvents();
 });
