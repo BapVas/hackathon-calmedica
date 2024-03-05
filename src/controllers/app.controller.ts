@@ -77,7 +77,18 @@ export class AppController {
 
     const data = await mongoAggregates().messagesByScoresAndCategory(scoresArrayAsNumbers, params.category);
 
-    return JSON.stringify(data);
+    const filePath = './src/files/prompt-summary.txt';
+    const summaryPrompt = fs.readFileSync(filePath, 'utf8');
+    const promptText = summaryPrompt.replace(
+      '//promptText//',
+      JSON.stringify(data),
+    );
+
+    const result = await this.openAiConnector.query(summaryPrompt);
+
+    const promptResults = result.choices[0].message.content;
+
+    return promptResults;
   }
 
   @Get('testPrompt')
