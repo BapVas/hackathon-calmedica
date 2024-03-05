@@ -25,6 +25,29 @@ const mongoAggregates = () => ({
 
     return result;
   },
+
+  averagesByCategory: async () => {
+    const mongodb = new MongoClient("mongodb://mongo:27017");
+    await mongodb.connect();
+    const database = mongodb.db('nest');
+    const collection = database.collection('responses');
+
+    const pipeline = [
+      {
+        $unwind: '$categories',
+      },
+      {
+        $group: {
+          _id: '$categories.type',
+          averageScore: { $avg: "$categories.score" },
+        },
+      },
+    ];
+
+    const result = await collection.aggregate(pipeline).toArray();
+
+    return result;
+  },
 });
 
 export default mongoAggregates;

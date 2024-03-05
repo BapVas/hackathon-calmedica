@@ -30,8 +30,8 @@ export class AppController {
   async graph() {
   }
 
-  @Get('graph-data')
-  async graphdata() {
+  @Get('graph-data-counts')
+  async graphdatacounts() {
     const data = await mongoAggregates().messageCountByCategory();
 
     let labels = [];
@@ -45,6 +45,23 @@ export class AppController {
     return {
       labels: labels,
       counts: counts
+    };
+  }
+  @Get('graph-data-averages')
+  async graphdataaverages() {
+    const data = await mongoAggregates().averagesByCategory();
+
+    let labels = [];
+    let averages = [];
+    for(var i in data) {
+      const row = data[i];
+      labels.push(row._id);
+      averages.push(row.averageScore);
+    }
+
+    return {
+      labels: labels,
+      averages: averages
     };
   }
 }
