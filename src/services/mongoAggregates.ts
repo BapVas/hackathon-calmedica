@@ -1,10 +1,11 @@
 import mongoose, { Model } from 'mongoose';
 import { ResponseSchema } from '../schema/Response.schema';
 import { MongoClient } from 'mongodb';
+import * as process from 'process';
 
 const mongoAggregates = () => ({
   messageCountByCategory: async () => {
-    const mongodb = new MongoClient("mongodb://mongo:27017");
+    const mongodb = new MongoClient(process.env.MONGO_URI);
     await mongodb.connect();
     const database = mongodb.db('nest');
     const collection = database.collection('responses');
@@ -27,7 +28,7 @@ const mongoAggregates = () => ({
   },
 
   averagesByCategory: async () => {
-    const mongodb = new MongoClient("mongodb://mongo:27017");
+    const mongodb = new MongoClient(process.env.MONGO_URI);
     await mongodb.connect();
     const database = mongodb.db('nest');
     const collection = database.collection('responses');
