@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/public/app.js"></script>
+  <link rel="stylesheet" href="/public/app.css">
+</head>
+<body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
+<section class="py-1 bg-blue w-full">
+  <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+    <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
+      <div class="rounded-t mb-0 px-4 py-6 border-0 flex flex-wrap items-center">
+        <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+          <h3 class="font-semibold text-base text-blueGray-700">Liste des réponses</h3>
+        </div>
+        <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+          <a class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="/">Ajouter une réponse</a>
+        </div>
+      </div>
+      <div class="flex items-center justify-center mb-6">
+        {{#each categories as |category|}}
+            <a href="#{{category.type}}" class="bg-gray-200 text-gray-700 hover:!bg-gray-400 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">{{category.type}}</a>
+        {{/each}}
+      </div>
+      <div class="block w-full overflow-x-auto">
+        {{#each categories as |category|}}
+          <h3 class="font-semibold text-base text-slate-700 px-6 mb-4 border-t-2 pt-4 border-solid border-gray-300" id="{{ category.type }}">Catégorie : {{category.type}}</h3>
+          <table class="items-center bg-transparent w-full border-collapse border-bottom mb-10">
+            <thead>
+            <tr>
+              <th class="px-6 bg-gray-50 text-gray-500 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Réponses</th>
+              <th class="px-6 bg-gray-50 text-gray-500 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Score</th>
+              <th class="px-6 bg-gray-50 text-gray-500 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Status analyse</th>
+              <th class="px-6 bg-gray-50 text-gray-500 align-middle border border-solid border-gray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each category.responses as |response|}}
+              <tr>
+                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                  {{response.content }}
+                </th>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                  {{#if response.score}}{{response.score}}{{else}}N/A{{/if}}
+                </td>
+                <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  {{#if response.shouldBeAnalysed}}
+                    {{#if response.isAnalysed}}
+                      <button class="bg-green-500 text-white text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">Analysé</button>
+                    {{else}}
+                      <button class="bg-red-500 text-white text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">En attente</button>
+                    {{/if}}
+                  {{else}}
+                    <button class="bg-gray-500 text-white text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">NN</button>
+                  {{/if}}
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  <button onclick="window.deleteResponse('{{response.id}}')" class="bg-red-500 text-white active:bg-red-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            {{else}}
+              <tr class="text-center">
+                <td colspan="4" class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-gray-500/80">
+                  Aucune réponse pour cette catégorie
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

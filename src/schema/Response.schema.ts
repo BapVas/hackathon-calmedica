@@ -8,6 +8,7 @@ export const ResponseSchema = new mongoose.Schema({
   score: [Number, null],
   isAnalysed: Boolean,
   shouldBeAnalysed: Boolean,
+  date: Date,
   categories: [
     {
       name: String,
