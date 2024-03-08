@@ -5,6 +5,7 @@ import { OpenAiConnector } from '../services/OpenAiConnector'; // Adjust the pat
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
+import { defaultCategory } from '../utils/categories';
 
 // Read csv file, create for each line a mongo document and save it {id: XX, message: "XX", score: "XX", isAnalysed: false, shouldBeAnalysed: true, categories: [{name: "XX", score: "XX", isAIGenerated: "XX"}]}
 
@@ -143,9 +144,13 @@ export class AppController {
           const promptResults = JSON.parse(result.choices[0].message.content);
 
           for (const promptResult of promptResults) {
-            // we save it to the database
+            let categories = promptResult.categories;
+            if (categories.length > 0) {
+              categories = defaultCategory;
+            }
+
             await this.responseModel.findByIdAndUpdate(promptResult.id, {
-              $set: { categories: promptResult.categories, isAnalysed: true },
+              $set: { categories: categories, isAnalysed: true },
             });
           }
         } catch (error) {

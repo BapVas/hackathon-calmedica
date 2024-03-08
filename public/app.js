@@ -122,6 +122,11 @@ function addAnalyzeButtonEvent() {
   }
 
   button.addEventListener('click', function () {
+    button.querySelector('svg').classList.remove('hidden');
+    button.classList.add('cursor-not-allowed');
+    button.classList.add('opacity-50');
+    button.disabled = true;
+
     alert(
       "L'anayse des réponses va démarer. Vous serez notifié une fois l'analyse terminée.",
     );
@@ -163,6 +168,18 @@ function addResumeButtonEvent() {
   });
 }
 
+function addSwitchEvent() {
+  document
+    .getElementById('switch-numeric-responses')
+    .addEventListener('change', function () {
+      document
+        .querySelectorAll('[data-is-numeric-response]')
+        .forEach((element) => {
+          element.parentElement.parentElement.classList.toggle('hidden');
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   addInputEvent();
   addButtonEvent();
@@ -170,4 +187,5 @@ document.addEventListener('DOMContentLoaded', function () {
   addAnalyzeButtonEvent();
   addOpenCategoryButtonEvents();
   addResumeButtonEvent();
+  addSwitchEvent();
 });
