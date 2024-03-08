@@ -39,8 +39,8 @@ export class ResponseService {
     return response;
   }
 
-  async getResponses(): Promise<ResponsesDocument[]> {
-    return this.responseModel.find().lean();
+  getResponses(): Promise<ResponsesDocument[]> {
+    return this.responseModel.find().exec();
   }
 
   async deleteResponse(id: string): Promise<ResponsesDocument> {

@@ -31,30 +31,20 @@ export class ResponseController {
     const result: ResponsesDocument[] =
       await this.responseService.getResponses();
 
-    const categories = { ...importedCategories };
+    const categories = JSON.parse(JSON.stringify(importedCategories));
 
     result.forEach((response) => {
       if (response.categories.length === 0) {
         categories['not_in_category'].responses.push(response);
       }
 
+      const scores = {};
       response.categories.forEach((category) => {
         categories[category.name]?.responses.push(response);
+        scores[category.name] = category.score;
       });
+      response.scores = JSON.stringify(scores);
     });
-
-    Object.keys(categories).forEach((category: string) => {
-      Object.keys(categories[category].responses).forEach((response) => {
-        const element = categories[category].responses[response];
-        element.scores = {};
-        element.categories.forEach((cat) => {
-          element.scores[cat.name] = cat.score;
-        });
-        element.scores = JSON.stringify(element.scores);
-      });
-    });
-
-    console.log(categories);
 
     return { categories };
   }

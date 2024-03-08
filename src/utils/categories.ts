@@ -1,16 +1,6 @@
 import { CategoryDocument } from './categories.types';
 
 export const categories: { [key: string]: CategoryDocument } = {
-  hotellerie: {
-    name: 'hotellerie',
-    score: null,
-    responses: [],
-  },
-  sante: {
-    name: 'sante',
-    score: null,
-    responses: [],
-  },
   medicale: {
     name: 'medicale',
     score: null,
@@ -26,13 +16,23 @@ export const categories: { [key: string]: CategoryDocument } = {
     score: null,
     responses: [],
   },
-  not_in_category: {
-    name: 'not_in_category',
+  hotelier: {
+    name: 'hotelier',
+    score: null,
+    responses: [],
+  },
+  organisationnelle: {
+    name: 'organisationnelle',
     score: null,
     responses: [],
   },
   general: {
     name: 'general',
+    score: null,
+    responses: [],
+  },
+  not_in_category: {
+    name: 'en attente',
     score: null,
     responses: [],
   },

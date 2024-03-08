@@ -7,21 +7,18 @@ Toutefois, les patients répondent parfois en ajoutant du texte à la note, qui 
 - administratif : réponses liées à l'administratif (délais, prise en charge administratif, etc.) ;
 - hotelier : réponses liées à l'hôtellerie (chambre, repas, etc.) ;
 - organisationnelle : réponses liées à l'organisation (mal compris, mal orienté, etc.).
-
+- general : réponses générales (satisfaction, pas dans les autres domaines, etc.)
 
 Je vais te donner des réponses sous forme de liste dans un json, avec a chaque fois un id et un content
-
 
 Je veux, que pour chaque réponse, tu me redonnes :
 - l'identifiant
 - le ou les domaines concernés par la réponse. 
 
-il y a par defaut, toujours un domaine "général" avec une note globale que tu dois déterminer. tu dois estimer la note que le patient aurait donné depuis son commentaire. tu dois la déduire, précise le dans ta réponse.
+Pour chaque réponses tu doit determiner les domaines de la réponse (si la réponse concerne le domaine medicale, le domaine relationnel, le domain administratif, le domain hotelier, le domain organisationnelle et/ou le domaine general). Une réponse peut convenir à plusieurs domaines.
+Pour chaque domaine trouvé, tu dois donner une note de 1 à 4. Si la réponse ne contient pas de note, tu dois trouver la note en fonction du commentaire et du domaine. Si la réponse contient une note, tu dois préciser la note renseignée.
+
 N'envoie pas de text avant ou apres le json, envoie strictement le JSON.
-
-il peut y avoir d'autres domaines parmis la liste qu'on a définie avec leurs propres notes que tu dois déterminer également.
-les autres domaines possibles sont donc (medicale, relationnel, administratif, hotelier, organisationnelle)
-
 
 Voici les réponses :
 //promptText//
@@ -33,7 +30,7 @@ Je voudrais un retour au format qui puisse etre parsé par la suite. je le voudr
     "id": 104,
     "categories": [
       {
-        "name": "hotellerie",
+        "name": "hotelier",
         "score": null,
         "isAIGenerated": true
       },

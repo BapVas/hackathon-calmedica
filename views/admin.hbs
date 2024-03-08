@@ -30,8 +30,10 @@
       </div>
       <div class="block w-full overflow-x-auto">
         {{#each categories as |category|}}
-          <div data-category="{{category.name}}" class="hidden">
-            <h3 class="font-semibold text-base text-slate-700 px-6 mb-4 border-t-2 pt-4 border-solid border-gray-300" id="{{ category.name }}">Catégorie : {{category.name}}</h3>
+          <div data-category="{{category.name}}" class="">
+            <h3 class="font-semibold text-base text-slate-700 px-6 mb-4 border-t-2 pt-4 border-solid border-gray-300" id="{{ category.name }}">
+              Catégorie : <a class="underline decoration-2 decoration-blue-400 hover:decoration-red-400" href="/summary/{{category.name}}/1,2,3,4,5">{{category.name}}</a>
+            </h3>
             <table class="items-center bg-transparent w-full border-collapse border-bottom mb-10">
               <thead>
               <tr>
@@ -44,7 +46,7 @@
               <tbody>
               {{#each category.responses as |response|}}
                 <tr>
-                  <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 flex text-wrap max-w-64">
+                  <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 flex text-wrap w-72 overflow-scroll">
                     {{response.content}}
                   </th>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4" data-show-score="{{response.scores}}" data-category="{{category.name}}">

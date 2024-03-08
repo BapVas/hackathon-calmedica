@@ -71,23 +71,44 @@ export class AppController {
   }
 
   @Get('summary/:category/:scores')
+  @Render('summary.hbs')
   async summary(@Param() params: { category: string; scores: string }) {
-    const scoresArrayAsString = params.scores.split('-');
+    const scoresArrayAsString = params.scores.split(',');
     const scoresArrayAsNumbers = scoresArrayAsString.map((value) =>
       parseInt(value),
     );
 
-    await mongoAggregates().messagesByScoresAndCategory(
+    const messages = await mongoAggregates().messagesByScoresAndCategory(
       scoresArrayAsNumbers,
       params.category,
     );
+    const messagesContent = messages.map((message) => message.content);
 
     const filePath = './src/files/prompt-summary.txt';
-    const summaryPrompt = fs.readFileSync(filePath, 'utf8');
+    let summaryPrompt = fs.readFileSync(filePath, 'utf8');
 
-    const result = await this.openAiConnector.query(summaryPrompt);
+    let result = 'Aucun résultat trouvé pour ces scores et cette catégorie';
+    if (messages.length > 0) {
+      summaryPrompt = summaryPrompt.replace(
+        '//promptText//',
+        `|${messagesContent.join('|')}|`,
+      );
+      summaryPrompt = summaryPrompt.replace(
+        '//category//',
+        `|${params.category}|`,
+      );
 
-    return result.choices[0].message.content;
+      const iaRes = await this.openAiConnector.query(summaryPrompt);
+      result = iaRes.choices[0].message.content;
+    }
+
+    return {
+      category: params.category,
+      scoresArrayAsString: scoresArrayAsString,
+      messagesLength: messages.length ? messages.length : 0,
+      messagesContent: messagesContent.join(' | '),
+      result: result,
+    };
   }
 
   @Get('/analyze')
@@ -107,7 +128,6 @@ export class AppController {
           console.log('no more documents to process');
           break; // No more documents to process
         }
-        console.log('ok');
 
         const filePath = './src/files/prompt.txt';
         const csvData = fs.readFileSync(filePath, 'utf8');

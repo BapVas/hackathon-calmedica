@@ -130,8 +130,9 @@ function addAnalyzeButtonEvent() {
       .then((response) => response.json())
       .then(() => {
         alert(
-          "L'analyse est terminée. Vous pouvez consulter les résultats dans la section 'Résultats'.",
+          "L'analyse est terminée. Vous pouvez maintenant consulter les résultats.",
         );
+        window.location.reload();
       });
   });
 }
@@ -141,10 +142,24 @@ function addOpenCategoryButtonEvents() {
     element.addEventListener('click', () => {
       const category = element.getAttribute('data-open-category');
       const container = document.querySelector(`[data-category="${category}"]`);
-      console.log(container);
       container.classList.toggle('hidden');
       element.classList.toggle('bg-gray-400');
     });
+  });
+}
+
+function addResumeButtonEvent() {
+  const button = document.getElementById('summary-button');
+
+  if (!button) {
+    return;
+  }
+
+  const input = button.parentElement.querySelector('input');
+
+  button.addEventListener('click', function () {
+    const url = button.dataset.url;
+    window.location.href = url.replace('XXX', input.value);
   });
 }
 
@@ -154,4 +169,5 @@ document.addEventListener('DOMContentLoaded', function () {
   showScore();
   addAnalyzeButtonEvent();
   addOpenCategoryButtonEvents();
+  addResumeButtonEvent();
 });

@@ -58,15 +58,15 @@ const mongoAggregates = () => ({
         $match: {
           'categories.name': category,
           'categories.score': { $in: scores },
-          'shouldBeAnalysed': true
+          shouldBeAnalysed: true,
         },
       },
       {
         $project: {
           _id: 0,
-          content: 1
-        }
-      }
+          content: 1,
+        },
+      },
     ];
 
     return await collection.aggregate(pipeline).toArray();
