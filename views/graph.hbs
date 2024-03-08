@@ -9,18 +9,22 @@
   <link rel="stylesheet" href="/public/app.css">
 </head>
 <body class="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10">
-<div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
-  <h1>Nombre de messages par catégorie</h1>
-  <div>
-    <canvas id="myChart"></canvas>
+<div class="flex flex-col flex-grow w-full max-w-xl overflow-hidden">
+  <h1 class="text-center text-2xl font-bold mt-12 mb-12">Analyse réponses MQ via ChatGPT</h1>
+  <div class="bg-white shadow-xl rounded-lg p-6">
+    <h1 class="text-lg mb-6">Nombre de messages par catégorie</h1>
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+    <p class="text-sm text-gray-600 mt-2 opacity-80">Rappel : un même message peut apparaître dans plusieurs catégories. La catégorie général contient le véritable total de messages.</p>
   </div>
-  <legend>Rappel : un même message peut apparaître dans plusieurs catégories. La catégorie général contient le véritable total de messages.</legend>
-
-  <h1>Moyenne des notes par catégorie</h1>
+  <div class="bg-white shadow-xl rounded-lg p-6 mt-6">
+    <h1 class="text-lg mb-6">Moyenne des notes par catégorie</h1>
     <div>
       <canvas id="myChart2"></canvas>
     </div>
-    <legend>Rappel : Pour les catégories autres que général, les notes sont pour la plupart générées via l'IA depuis les commentaires des patients.<br>Pour général, les patients ayant juste donné une note sont comptés, et ceux n'en ayant pas donné font l'objet d'une estimation par l'IA également.</legend>
+    <p class="text-sm text-gray-600 mt-2 opacity-80">Rappel : Pour les catégories autres que général, les notes sont pour la plupart générées via l'IA depuis les commentaires des patients.<br>Pour général, les patients ayant juste donné une note sont comptés, et ceux n'en ayant pas donné font l'objet d'une estimation par l'IA également.</p>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
