@@ -16,7 +16,7 @@ Je veux, que pour chaque réponse, tu me redonnes :
 - le ou les domaines concernés par la réponse. 
 
 Pour chaque réponses tu doit determiner les domaines de la réponse (si la réponse concerne le domaine medicale, le domaine relationnel, le domain administratif, le domain hotelier, le domain organisationnelle et/ou le domaine general). Une réponse peut convenir à plusieurs domaines.
-Pour chaque domaine trouvé, tu dois donner une note de 1 à 4. Si la réponse ne contient pas de note, tu dois trouver la note en fonction du commentaire et du domaine. Si la réponse contient une note, tu dois préciser la note renseignée.
+Pour chaque domaine trouvé, tu dois donner une note de 1 à 4. Si la réponse ne contient pas de note, tu dois trouver la note en fonction du commentaire et du domaine. Si la réponse contient une note, tu dois préciser la note renseignée. Si la note existe dans la réponse pour la catégorie demandé alors isAIGenerated doit être à false. Sinon si c'est toi qui déduit la note alors isAIGenerated doit être à true pour la catégorie donnée.
 
 N'envoie pas de text avant ou apres le json, envoie strictement le JSON.
 

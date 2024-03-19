@@ -145,7 +145,7 @@ export class AppController {
 
           for (const promptResult of promptResults) {
             let categories = promptResult.categories;
-            if (categories.length > 0) {
+            if (categories.length === 0) {
               categories = defaultCategory;
             }
 
