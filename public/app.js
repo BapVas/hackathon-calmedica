@@ -24,7 +24,7 @@ function getMessages() {
     <span class="text-xs text-gray-500 leading-none">${formatDateToHumanReadable(message.date)}</span>
   </div>
   <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
-    <img src="https://placehold.co/600/black/white?text=${index}" alt="avatar" class="h-10 w-10 rounded-full" />
+    <img src="https://placehold.co/600/black/white?text=${++index}" alt="avatar" class="h-10 w-10 rounded-full" />
   </div>
 </li>`,
     )
@@ -49,6 +49,21 @@ function deleteResponse(id) {
       const messages = JSON.parse(localStorage.getItem('messages')) || [];
       const newMessages = messages.filter((message) => message.id !== id);
       localStorage.setItem('messages', JSON.stringify(newMessages));
+      window.location.reload();
+    });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function reanalyzeResponse(id) {
+  if (confirm('Reanalyze this response ?') === false) {
+    return;
+  }
+
+  fetch(`change-state/${id}`, {
+    method: 'PATCH',
+  })
+    .then((response) => response.json())
+    .then(() => {
       window.location.reload();
     });
 }
