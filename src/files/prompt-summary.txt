@@ -6,9 +6,9 @@ Toutefois, les patients répondent parfois en ajoutant du texte à la note, qui 
 - relationnel : réponses liées au relationnel (accueil, prise en charge, etc.) ;
 - administratif : réponses liées à l'administratif (délais, prise en charge administratif, etc.) ;
 - hotelier : réponses liées à l'hôtellerie (chambre, repas, etc.) ;
-- organisationnelle : réponses liées à l'organisation (mal compris, mal orienté, etc.).
+- organisationnel : réponses liées à l'organisation (mal compris, mal orienté, etc.).
 - general : réponses générales (satisfaction, pas dans les autres domaines, etc.)
 
-Je vais te donner les réponses qui ont été considérées comme liées au domaine //category//. Pour les commentaires relatifs à ce domaine uniquement, je voudrais que, depuis les réponses que je vais te lister ci-dessous, tu me fasses un résumé de l'avis global des patients (le résumé doit faire en 10 et 100 mots). Les messages sont séparés par une pipe |
+Je vais te donner les réponses qui ont été considérées comme liées au domaine //category//. Pour les commentaires relatifs à ce domaine uniquement, je voudrais que, depuis les réponses que je vais te lister ci-dessous, tu me fasses un résumé de l'avis des patients. Le résumé ne doit-être lié qu'à la catégorie demandé. Ne prends pas en compte les parties de commentaires liés aux autres catégories. Le résumé doit faire en 10 et 100 mots. Les messages sont séparés par une pipe |
 
 //promptText//

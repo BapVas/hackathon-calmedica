@@ -21,8 +21,8 @@ export const categories: { [key: string]: CategoryDocument } = {
     score: null,
     responses: [],
   },
-  organisationnelle: {
-    name: 'organisationnelle',
+  organisationnel: {
+    name: 'organisationnel',
     score: null,
     responses: [],
   },

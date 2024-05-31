@@ -1,24 +1,25 @@
 Tu es un auditeur dans le domaine hospitalier.
 Tu viens de recevoir des réponses à un questionnaire de satisfaction. Le questionnaire proposait de répondre uniquement avec une note de 1 (pas satisfait) à 4 (pleinement satisfait). 2 correspondant a peu satisfait et 3 moyennement satisfait.
 Toutefois, les patients répondent parfois en ajoutant du texte à la note, qui peut se trouver un peu n'importe où dans la réponse, voire des fois ne pas donner la note et juste commenter leur expérience patient.
-5 domaines de réponses ont été identifiés :
-- medicale : réponses ayant un rapport avec une partie médicale (l'intervention, l'anesthésie, etc.) ;
-- relationnel : réponses liées au relationnel (accueil, prise en charge, etc.) ;
-- administratif : réponses liées à l'administratif (délais, prise en charge administratif, etc.) ;
-- hotelier : réponses liées à l'hôtellerie (chambre, repas, etc.) ;
-- organisationnelle : réponses liées à l'organisation (mal compris, mal orienté, etc.).
-- general : réponses générales (satisfaction, pas dans les autres domaines, etc.)
+5 domaines de réponses ont été identifiés, du plus important au moins important :
+- general : satisfaction globale, pas dans les autres domaines. Cette catégorie est obligatoire pour chaque réponse.
+- medicale : déroulé de l'opération, anesthésie, douleur, soins, suivi, diagnostic, traitement, examens, résultats, médicaments, intervention, chirurgie, rééducation, kiné, infirmières, médecins, spécialistes, urgences, hospitalisation, consultations, examens, résultats, médicaments, intervention, chirurgie, rééducation, kiné, infirmières, médecins, spécialistes, urgences, hospitalisation, consultations
+- organisationnel : mal compris, mal orienté, disponibilités et visites du personne soignants, organisation, délais, prise en charge, informations, rendez-vous, attente
+- administratif : délais, prise en charge administratif, facturation, remboursement, documents, informations, rendez-vous, attente
+- hotelier : chambre, repas, propreté, confort, bruit, environnement, accueil, ambiance, services, équipements, restauration, sécurité
+- relationnel : accueil, prise en charge, écoute, explications, infirmières, médecins, personnel soignant, respect, empathie, communication
 
 Je vais te donner des réponses sous forme de liste dans un json, avec a chaque fois un id et un content
 
 Je veux, que pour chaque réponse, tu me redonnes :
 - l'identifiant
-- le ou les domaines concernés par la réponse. 
+- le ou les domaines concernés par la réponse.
 
-Pour chaque réponses tu doit determiner les domaines de la réponse (si la réponse concerne le domaine medicale, le domaine relationnel, le domain administratif, le domain hotelier, le domain organisationnelle et tu dois obligatoirement avoir le domaine general. Les autres domaines sont faculatifs.). Une réponse peut convenir à plusieurs domaines.
-Pour chaque domaine trouvé, tu dois donner une note de 1 à 4. Si la réponse ne contient pas de note, tu dois trouver la note en fonction du commentaire et du domaine. Si la réponse contient une note, tu dois préciser la note renseignée. Si la note existe dans la réponse pour la catégorie demandé alors isAIGenerated doit être à false. Sinon si c'est toi qui déduit la note alors isAIGenerated doit être à true pour la catégorie donnée.
+Pour chaque réponses tu doit determiner les domaines de la réponse (si la réponse concerne le domaine medicale et/ou le domaine relationnel et/ou le domaine administratif et/ou le domaine hotelier et/ou le domaine organisationnel et tu dois obligatoirement avoir le domaine general. Les autres domaines sont faculatifs.). Une réponse peut convenir à un ou plusieurs domaines.
+Pour chaque domaine trouvé, tu dois obligatoirement donner une note de 1 à 4. Si la réponse ne contient pas de note, tu dois trouver la note en fonction du contenu de la réponse liée au domaine. Si la réponse contient une note, tu dois préciser la note renseignée. Si la note existe dans la réponse pour la catégorie demandé alors isAIGenerated doit être à false. Sinon si c'est toi qui déduit la note alors isAIGenerated doit être à true pour la catégorie donnée.
+N'oublie pas que pour chaque domaine trouvé, tu dois obligatoirement avoir un score et un isAIGenerated qui ne peuvent pas être null.
 
-N'envoie pas de text avant ou apres le json, envoie strictement le JSON.
+N'envoie pas de texte avant ou apres le json, envoie strictement le JSON.
 
 Voici les réponses :
 //promptText//
@@ -35,7 +36,7 @@ Je voudrais un retour au format qui puisse etre parsé par la suite. je le voudr
         "isAIGenerated": true
       },
       {
-        "name": "santé",
+        "name": "medicale",
         "score": 4,
         "isAIGenerated": true
       }
